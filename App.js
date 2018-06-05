@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import { Button } from 'react-native-elements';
 // Following imports are dependent files for project
 // Each one adds elements/constants/components/data etc...
 import FetchLocationBtn from './components/FetchLocation'
@@ -34,7 +35,32 @@ export default class App extends React.Component {
           longitudeDelta: 0.0421
         }
       });
+
+      // Standard fetch api that sends coords to google firebase (backend).
+      // Fetches url as first argument and uses a POST method within the second argument object.
+      // POST method posts the body of the 2nd arg obj as a JSON string, as indicated by JSON.stringify
+      // position lat and long coords are then turned into a JSON string and posted on the firebase backend
+      fetch('https://testapp-206216.firebaseio.com/places.json', {
+        method: 'POST',
+        body: JSON.stringify({
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+        })
+      })
+      .then(res => console.log(res)) // then call logs response from backend onto console
+      .catch(err => console.log(err)); // catch call logs console error if network connection failure is present
+      
     }), err => console.log(err); // console error is created so as to notify if network type error is present
+  }
+
+  otherUsersHandler = () => {
+      // Standard fetch api that receives coords from google firebase (backend). See above api logic.
+      fetch('https://testapp-206216.firebaseio.com/places.json')
+      .then(res => res.json()) // then call takes data fetched from above url and logs it into a json response
+      .then(parsedRes => {
+        
+      })
+      .catch(err => console.log(err)); // catch call logs console error if network connection failure is present
   }
 
   // The following return statement is what is returned by the default class for the page: App.
@@ -46,10 +72,29 @@ export default class App extends React.Component {
         <FetchLocationBtn
           // following prop: onGetLocation is declared by button element in FetchLocation.js
           // below prop is passed handler: this.getUserLocationHandler - located above
-          onGetLocation={this.getUserLocationHandler} />
+          onGetLocation={this.getUserLocationHandler} 
+        />
+
         {/* Below is a props functional component located in UsersMap.js that returns a react-native-maps MapView element which has been 
         renamed by the function as UsersMap */}
         <UsersMap userLocation={this.state.userLocation} />
+
+        <View style={{marginTop: 30}}>
+          <Button
+            title="Get Other User Locations!"
+            onPress={this.otherUsersHandler}
+            icon={{name: 'users', type: 'font-awesome'}}
+            buttonStyle={{
+              marginBottom: 30,
+              backgroundColor: 'rgba(92, 99,216, 1)',
+              width: 300,
+              height: 45,
+              borderColor: "transparent",
+              borderWidth: 0,
+              borderRadius: 5
+            }}
+          />  
+        </View>
       </View>
     );
   }
