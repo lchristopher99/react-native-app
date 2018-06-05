@@ -1,13 +1,16 @@
 import React from 'react';
 import {
-  Text,
   StyleSheet,
 } from 'react-native';
 import {
   Button,
 } from 'react-native-elements';
 
+// fetchLocation is the default exported const for this file.
 const fetchlocation = props => {
+// The following return statement is what is returned by the default const for the page: fetchLocation.
+// It contains a button element imported from react-native-elements (dependency) that has 
+// an onPress props declaration: props.onGetLocation - handler located in App.js.
   return (
     <Button
       title="Get Location"
