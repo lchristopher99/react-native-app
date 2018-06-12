@@ -36,8 +36,8 @@ const UsersMap = props => {
           // initial region is set to random x, y coords
           latitude: 37,
           longitude: -86,
-          latitudeDelta: 0.0622,
-          longitudeDelta: 0.0421
+          latitudeDelta: 0,
+          longitudeDelta: 0
         }}
         //
         region={props.userLocation}
@@ -54,8 +54,9 @@ const UsersMap = props => {
 // modularize code.
 const styles = StyleSheet.create({
   mapView: {
-    height: '25%',
-    width: '100%'
+    height: '100%',
+    width: '100%',
+    zIndex: 0
   },
   Map: {
     height: '100%',
